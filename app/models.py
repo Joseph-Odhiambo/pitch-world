@@ -10,11 +10,9 @@ class User(db.Model,UserMixin):
     secure_password = db.Column(db.String(255),nullable = False)
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
-    pitches = db.relationship('Pitch', backref='users', lazy='dynamic')
     pitches = db.relationship('Pitch', backref='user', lazy='dynamic')
     comment = db.relationship('Comment', backref='user', lazy='dynamic')
-
-
+    
     @property
     def set_password(self):
         raise AttributeError('You cannot read the password attribute')
@@ -46,11 +44,9 @@ class Pitch(db.Model):
     def save_p(self):
         db.session.add(self)
         db.session.commit()
-
-
+        
     def __repr__(self):
         return f'Pitch {self.post}'
-
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
@@ -59,14 +55,13 @@ class Comment(db.Model):
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
 
     def save_p(self):
+    def save_c(self):
         db.session.add(self)
         db.session.commit()
 
     def __repr__(self):
         return f'comment:{self.comment}'
-
-
-
+    
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
