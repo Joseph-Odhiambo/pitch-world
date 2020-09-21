@@ -11,7 +11,9 @@ def index():
     event = Pitch.query.filter_by(category = 'Events').all()
     advertisement = Pitch.query.filter_by(category = 'Advertisement').all()
     return render_template('index.html', job = job,event = event, pitches = pitches,advertisement= advertisement)
+
 @main.route('/new_pitch', methods = ['POST','GET'])
+@main.route('/create_new', methods = ['POST','GET'])
 @login_required
 def new_pitch():
     form = PitchForm()
@@ -22,8 +24,11 @@ def new_pitch():
         user_id = current_user
         new_pitch = Pitch(post=post,user_id=current_user._get_current_object().id,category=category,title=title)
         new_pitch.save_p()
+        new_pitch_object = Pitch(post=post,user_id=current_user._get_current_object().id,category=category,title=title)
+        new_pitch_object.save_p()
         return redirect(url_for('main.index'))
     return render_template('create_pitch.html', form = form)
+
 @main.route('/comment/<int:pitch_id>', methods = ['POST','GET'])
 @login_required
 def comment(pitch_id):
@@ -36,11 +41,8 @@ def comment(pitch_id):
         user_id = current_user._get_current_object().id
         new_comment = Comment(comment = comment,user_id = user_id,pitch_id = pitch_id)
         new_comment.save_c()
-        return redirect(url_for('.comment', pitch = pitch))
         return redirect(url_for('.comment', pitch_id = pitch_id))
     return render_template('comment.html', form =form, pitch = pitch,all_comments=all_comments)
-
-
 @main.route('/user/<name>')
 def profile(name):
     user = User.query.filter_by(username = name).first()

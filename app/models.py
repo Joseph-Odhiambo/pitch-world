@@ -36,34 +36,35 @@ class Pitch(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     title = db.Column(db.String(255))
     post = db.Column(db.Text())
+    title = db.Column(db.String(255),nullable = False)
+    post = db.Column(db.Text(), nullable = False)
     comment = db.relationship('Comment',backref='pitch',lazy='dynamic')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     time = db.Column(db.DateTime, default = datetime.utcnow)
     category = db.Column(db.String(255), index = True)
-    
+    category = db.Column(db.String(255), index = True,nullable = False)
+
     def save_p(self):
         db.session.add(self)
-        db.session.commit()
-        
-    def __repr__(self):
-        return f'Pitch {self.post}'
+@@ -58,9 +58,9 @@ def __repr__(self):
 class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text())
     user_id = db.Column(db.Integer,db.ForeignKey('users.id'))
     pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'))
+    comment = db.Column(db.Text(),nullable = False)
+    user_id = db.Column(db.Integer,db.ForeignKey('users.id'),nullable = False)
+    pitch_id = db.Column(db.Integer,db.ForeignKey('pitches.id'),nullable = False)
+
     def save_c(self):
         db.session.add(self)
         db.session.commit()
-
     @classmethod
     def get_comments(cls,pitch_id):
         comments = Comment.query.filter_by(pitch_id=pitch_id).all()
-
         return comments
-
-
+    
     def __repr__(self):
         return f'comment:{self.comment}'
     
