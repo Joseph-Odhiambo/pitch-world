@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_uploads import IMAGES, UploadSet,configure_uploads
+import os
 
 db = SQLAlchemy()
 mail = Mail()
@@ -24,6 +25,8 @@ def create_app(config_name):
 
     app.register_blueprint(authentication_blueprint)
     app.register_blueprint(main_blueprint)
+
+    app.secret_key = os.urandom(24)
 
     login_manager.init_app(app)
 
