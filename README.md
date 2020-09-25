@@ -11,7 +11,7 @@ This  is a flask application that allows users to post one minute pitches and al
 
 ## Screenshot
 
-<img src="https://github.com/Joseph-Odhiambo/pitch-world/blob/master/app/static/photos/Screenshot%20from%202020-09-25%2011-18-03.png?raw=true" width="900px" height="440px">
+<img src="https://github.com/Joseph-Odhiambo/pitch-world/blob/master/app/static/images/papa.png?raw=true" width="900px" height="440px">
 
 ## User Story
 
